@@ -4,8 +4,8 @@ const http = require('http');
 const ejs = require('ejs');
 const kintone = require('kintone');
 
-var token = "prqZ0aqGgAiOe60lqlyLCEExPLaci0D0zBDizW13";
-var api = new kintone("parknet.cybozu.com", { token: token });
+var token = "";
+var api = new kintone("", { token: token });
 
 var el = []
 
