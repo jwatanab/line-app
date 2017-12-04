@@ -4,8 +4,8 @@ const http = require('http');
 const ejs = require('ejs');
 const kintone = require('kintone');
 
-var token = "";
-var api = new kintone("", { token: token });
+var token = "prqZ0aqGgAiOe60lqlyLCEExPLaci0D0zBDizW13";
+var api = new kintone("parknet.cybozu.com", { token: token });
 
 var el = []
 
@@ -20,10 +20,14 @@ api.records.get({ app: 26 }, (err, res) => {
     //名前を格納
     if (res.records[i]["name"]["value"]) {
       index.name = res.records[i]["name"]["value"];
+    } else {
+      index.name = "__LINE_TOKEN__";
     }
     //更新時間を格納
     if (res.records[i]["create_at"]["value"]) {
       index.create_at = res.records[i]["create_at"]["value"];
+    } else {
+      index.create_at = "__LINE_TOKEN__";
     }
     //テキストを格納
     if (res.records[i]["index"]["value"]) {

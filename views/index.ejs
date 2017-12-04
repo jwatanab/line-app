@@ -30,12 +30,12 @@
     </div>
     <!--左からの吹き出し-->
     <div class=" kaiwa">
-      <figure class="kaiwa-img-left ">
+      <figure class="kaiwa-img-left" title="2日16時24分19秒">
         <img src="/images/detail_line2.png">
-        <figcaption class="kaiwa-img-description ">自分</figcaption>
+        <figcaption class="kaiwa-img-description">自分</figcaption>
       </figure>
       <div class="kaiwa-text-right ">
-        <p class="kaiwa-text ">こんばんわ</p>
+        <p class="kaiwa-text">こんばんわ</p>
       </div>
     </div>
   </div>
@@ -53,16 +53,29 @@
   ejsContent.ejsContentText = ejsContentText;
   ejsContent.ejsContentObject = ejsContentObject;
   for (var i = 0; i < ejsContent.ejsContentCreate_at.length; i++) {
+    if (ejsContent.ejsContentName[i].innerHTML.indexOf("__LINE_TOKEN__") == -1) {
+      var nameToken = ejsContent.ejsContentName[i].innerHTML;
+    } else {
+      var nameToken = "";
+    }
+    if (ejsContent.ejsContentCreate_at[i].innerHTML.indexOf("__LINE_TOKEN__") == -1) {
+      var localTime = new Date(Number(ejsContent.ejsContentCreate_at[i].innerHTML));
+      var localTimeDay = localTime.getDate();
+      var localTimeDate = localTime.getHours();
+      var localTimeMinutes = localTime.getMinutes();
+      var localTimeSecond = localTime.getSeconds();
+      var localTimeString = localTimeDay + "日" + localTimeDate + "時" + localTimeMinutes + "分" + localTimeSecond + "秒";
+    }
     if (ejsContent.ejsContentText[i].innerHTML.indexOf("__LINE_TOKEN__") == -1) {
-      details += "<div class='kaiwa'><figure class='kaiwa-img-right'><img src='/images/detail_line2.png' alt='./no-img2'>";
-      details += "<figcaption class='kaiwa-img-description'>" + ejsContent.ejsContentName[i].innerHTML + "</figcaption>";
+      details += "<div class='kaiwa'><figure class='kaiwa-img-right' title='" + localTimeString + "'><img src='/images/detail_line2.png' alt='./no-img2'>";
+      details += "<figcaption class='kaiwa-img-description'>" + nameToken + "</figcaption>";
       details += "</figure><div class='kaiwa-text-left'><p class='kaiwa-text'>"
       details += ejsContent.ejsContentText[i].innerHTML;
       details += "</p></div></div>";
     }
     if (ejsContent.ejsContentObject[i].innerHTML.indexOf("__LINE_TOKEN__") == -1) {
-      details += "<div class='kaiwa'><figure class='kaiwa-img-left'><img src='/images/detail_line2.png' alt='./no-img2'>";
-      details += "<figcaption class='kaiwa-img-description'>" + ejsContent.ejsContentName[i].innerHTML + "</figcaption>";
+      details += "<div class='kaiwa'><figure class='kaiwa-img-left'title='" + localTimeString + "'><img src='/images/detail_line2.png' alt='./no-img2'>";
+      details += "<figcaption class='kaiwa-img-description'>" + nameToken + "</figcaption>";
       details += "</figure><div class='kaiwa-text-right'><p class='kaiwa-text'>"
       details += ejsContent.ejsContentObject[i].innerHTML;
       details += "</p></div></div>";
