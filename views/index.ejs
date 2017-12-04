@@ -5,46 +5,38 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="stylesheet" href="/stylesheets/style.css">
   <title>Document</title>
 </head>
 
 <body>
-
-  <div class="none ejsContent">
-    <% for(var i in content){ %>
-      <% var index = content[i] %>
-        <div class="ejsContentName">
-          <%= index.name %>
-        </div>
-        <div class="ejsContentCreate_at">
-          <%= index.create_at %>
-        </div>
-        <div class="ejsContentText">
-          <%= index.text %>
-        </div>
-        <div class="ejsContentObject">
-          <%= index.object %>
-        </div>
-        <% } %>
-  </div>
-  <!--左からの吹き出し-->
-  <div class=" kaiwa">
-    <figure class="kaiwa-img-left ">
-      <img src="/images/detail_line2.png">
-      <figcaption class="kaiwa-img-description ">自分</figcaption>
-    </figure>
-    <div class="kaiwa-text-right ">
-      <p class="kaiwa-text ">おいっすー！</p>
+  <div class="container">
+    <div class="none ejsContent">
+      <% for(var i in content){ %>
+        <% var index = content[i] %>
+          <div class="ejsContentName">
+            <%= index.name %>
+          </div>
+          <div class="ejsContentCreate_at">
+            <%= index.create_at %>
+          </div>
+          <div class="ejsContentText">
+            <%= index.text %>
+          </div>
+          <div class="ejsContentObject">
+            <%= index.object %>
+          </div>
+          <% } %>
     </div>
-  </div>
-  <!--右からの吹き出し-->
-  <div class="kaiwa ">
-    <figure class="kaiwa-img-right ">
-      <img src="/images/detail_line2.png" alt="no-img2 ">
-      <figcaption class="kaiwa-img-description ">兄貴</figcaption>
-    </figure>
-    <div class="kaiwa-text-left ">
-      <p class="kaiwa-text ">おいっすー！</p>
+    <!--左からの吹き出し-->
+    <div class=" kaiwa">
+      <figure class="kaiwa-img-left ">
+        <img src="/images/detail_line2.png">
+        <figcaption class="kaiwa-img-description ">自分</figcaption>
+      </figure>
+      <div class="kaiwa-text-right ">
+        <p class="kaiwa-text ">こんばんわ</p>
+      </div>
     </div>
   </div>
 </body>
@@ -60,7 +52,7 @@
   ejsContent.ejsContentCreate_at = ejsContentCreate_at;
   ejsContent.ejsContentText = ejsContentText;
   ejsContent.ejsContentObject = ejsContentObject;
-  for (var i = 1; i < ejsContent.ejsContentCreate_at.length; i++) {
+  for (var i = 0; i < ejsContent.ejsContentCreate_at.length; i++) {
     if (ejsContent.ejsContentText[i].innerHTML.indexOf("__LINE_TOKEN__") == -1) {
       details += "<div class='kaiwa'><figure class='kaiwa-img-right'><img src='/images/detail_line2.png' alt='./no-img2'>";
       details += "<figcaption class='kaiwa-img-description'>" + ejsContent.ejsContentName[i].innerHTML + "</figcaption>";
