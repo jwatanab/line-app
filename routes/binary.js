@@ -16,6 +16,8 @@ var result;
 
     var req = https.request(send_options, function (res) {
         var data = [];
+        var str = "";
+        var num = Number();
         res.on('data', function (chunk) {
             data.push(new Buffer(chunk));
         }).on('error', function (err) {
@@ -29,8 +31,7 @@ var result;
 
 /* GET users listing. */
 router.get('/', function (req, res, next) {
-    console.log(result);
-    res.render('binary', { content: result });
+    res.render('binary', { content: JSON.stringify(result) });
 });
 
 module.exports = router;

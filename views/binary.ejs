@@ -1,1 +1,19 @@
-<%= content %>
+<body>
+    <div id="binary" style="display: none" class="binary">
+        <%= content %>
+    </div>
+</body>
+<script>
+    var doc = document.getElementById('binary');
+    // バイナリ配列
+    const ary = JSON.parse(doc.innerHTML);
+    const typedArr = new Uint8Array(ary.data);
+    const blob = new Blob([ary], { type: "image/jpeg" });
+    const url = URL.createObjectURL(blob);
+    var img = document.createElement('img');
+    img.width = 500;
+    img.heght = 500;
+    img.src = url;
+    var body = document.getElementsByTagName('body')[0];
+    body.appendChild(img);
+</script>
