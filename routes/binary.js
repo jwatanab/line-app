@@ -6,7 +6,7 @@ var result;
 (function (message_id, callback) {
     var send_options = {
         host: 'api.line.me',
-        path: '/v2/bot/message/{7088818412449}/content',
+        path: '/v2/bot/message/7097918790956/content',
         headers: {
             "Content-type": "application/json; charset=UTF-8",
             "Authorization": " Bearer {" + "v66RZEdHXdQouvfhAFohg5PcFtRxc5cG7RCEFdtkjJoRLi4i/FKYD0lTpGid4ma4R/43QL+1jvI5dmUdGb/06DlbYfZX/ajkord5VQrazV8CUs894liV3ZZ8BQDDK1RYZAkGEhkp4rKS9OOTkWlojAdB04t89/1O/w1cDnyilFU=}" // ←ここに自分のトークンを入れる(LINE Developersで発行したやつ)
@@ -24,7 +24,11 @@ var result;
             console.log(err);
         }).on('end', function () {
             result = Buffer.concat(data);
-            console.log(result);
+            data = [];
+            for (var i = 0; i < result.length; i++) {
+                data.push(result[i]);
+            }
+            result = new Uint8Array(data);
         });
     });
     req.end();

@@ -6,9 +6,13 @@
 <script>
     var doc = document.getElementById('binary');
     // バイナリ配列
-    const ary = JSON.parse(doc.innerHTML);
-    const typedArr = new Uint8Array(ary.data);
-    const blob = new Blob([ary], { type: "image/jpeg" });
+    var json = JSON.parse(doc.innerHTML);
+    var ary = [];
+    for (var i in json) {
+        ary.push(json[i]);
+    }
+    result = new Uint8Array(ary);
+    const blob = new Blob([result], { type: "image/jpeg" });
     const url = URL.createObjectURL(blob);
     alert(url);
 </script>

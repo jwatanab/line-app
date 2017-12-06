@@ -34,7 +34,7 @@ var send_options = {
 };
 
 request.get(send_options, function (err, res, body) {
-
+  console.log();
 });
 
 /* GET users listing. */
