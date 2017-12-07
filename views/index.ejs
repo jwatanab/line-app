@@ -10,8 +10,8 @@
 </head>
 
 <body>
-  <div class="container">
-    <div class="none ejsContent">
+  <div class="container none">
+    <div class="ejsContent">
       <% for(var i in content){ %>
         <% var index = content[i] %>
           <div class="ejsContentName">
@@ -46,6 +46,7 @@
   var ejsContentName = document.getElementsByClassName('ejsContentName');
   var ejsContentText = document.getElementsByClassName('ejsContentText');
   var ejsContentObject = document.getElementsByClassName('ejsContentObject');
+  var ejsImgObject = document.getElementsByClassName('ejsImgObject')[0];
   var ejsContentCreate_at = document.getElementsByClassName('ejsContentCreate_at');
   var doc = document.getElementsByTagName('body')[0];
   ejsContent.ejsContentName = ejsContentName;
