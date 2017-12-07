@@ -5,7 +5,6 @@ const request = require('request');
 const ejs = require('ejs');
 const async = require('async');
 const kintone = require('kintone');
-const co = require('co');
 
 const token = "";
 const api = new kintone("", { token: token });
@@ -100,6 +99,7 @@ async.waterfall([
             send_options.path = '/v2/bot/message/' + content[i].object + '/content';
             if (imgObject.length == 9) {
               callback(null, content, nameObject, imgObject);
+              imgResult[0] = imgObject;
             }
           });
         });
@@ -113,7 +113,8 @@ async.waterfall([
         content[i].name = nameObject[i];
       }
     }
-    profileContent[0] = content, imgResult[0] = imgObject;
+    profileContent[0] = content;
+    imgResult[0] = imageObject;
   }]
 );
 
