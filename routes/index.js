@@ -8,15 +8,32 @@ const kintone = require('kintone');
 
 const token = "prqZ0aqGgAiOe60lqlyLCEExPLaci0D0zBDizW13";
 const api = new kintone("parknet.cybozu.com", { token: token });
-const imgResult = [];
-const profileContent = [];
+
+let
+  send_options = {},
+  req = {},
+  json = {},
+  data = new Array(),
+  content = new Array(),
+  record = new Array(),
+  acStr = new Array(),
+  imgObject = new Array(),
+  result = new Array(),
+  index = {},
+  functions = function () { },
+  profileContent;
+
+index = {
+  name: "",
+  text: "",
+  create_at: "",
+  object: ""
+}
 
 async.waterfall([
   function (callback) {
-    var content = [];
     api.records.get({ app: 26 }, (err, res) => {
-      var index = { name: "", text: "", create_at: "", object: "" }, record = [];
-      for (var i in res.records) {
+      for (let i in res.records) {
         if (res.records[i]["name"]["value"]) {
           index.name = res.records[i]["name"]["value"];
         } else {
@@ -42,93 +59,89 @@ async.waterfall([
         }
         record[i] = JSON.stringify(index);
       }
-      i = 0;
-      for (var i in record) {
+      for (let i in record) {
         content[i] = JSON.parse(record[i]);
       }
       callback(null, content);
     });
   },
   function (content, callback) {
-    var acStr = [];
-    for (let i in content) {
-      if (String(content[i].name).indexOf("__LINE_TOKEN__") !== 0) {
-        var send_options = {
-          "url": 'https://api.line.me/v2/bot/profile/' + content[i].name,
-          headers: {
-            "Content-type": "application/json; charset=UTF-8",
-            "Authorization": " Bearer {" + "v66RZEdHXdQouvfhAFohg5PcFtRxc5cG7RCEFdtkjJoRLi4i/FKYD0lTpGid4ma4R/43QL+1jvI5dmUdGb/06DlbYfZX/ajkord5VQrazV8CUs894liV3ZZ8BQDDK1RYZAkGEhkp4rKS9OOTkWlojAdB04t89/1O/w1cDnyilFU=}" // ←ここに自分のトークンを入れる(LINE Developersで発行したやつ)
-          },
-          method: 'GET'
-        };
-
-        request.get(send_options, function (err, res, body) {
-          var json = JSON.parse(body);
-          acStr.unshift(json.displayName);
-          if (acStr.length == content.length) callback(null, content, acStr);
-        });
-      } else {
-        acStr.unshift("__LINE_TOKEN__");
-        if (acStr.length == content.length) callback(null, content, acStr);
-      }
-    }
+    functions = content.map(it => done => {
+      send_options = {
+        "url": 'https://api.line.me/v2/bot/profile/' + it.name,
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+          "Authorization": " Bearer {" + "v66RZEdHXdQouvfhAFohg5PcFtRxc5cG7RCEFdtkjJoRLi4i/FKYD0lTpGid4ma4R/43QL+1jvI5dmUdGb/06DlbYfZX/ajkord5VQrazV8CUs894liV3ZZ8BQDDK1RYZAkGEhkp4rKS9OOTkWlojAdB04t89/1O/w1cDnyilFU=}" // ←ここに自分のトークンを入れる(LINE Developersで発行したやつ)
+        },
+        method: 'GET'
+      };
+      request.get(send_options, function (err, res, body) {
+        json = JSON.parse(body);
+        it.name = json.displayName;
+        done(null, it);
+      });
+    });
+    callback(null, content, functions);
+  },
+  function (content, functions, callback) {
+    async.series(functions, (err, results) => {
+      if (err) console.error(err);
+      callback(null, content, results);
+    });
   },
   function (content, nameObject, callback) {
-    var imgObject = [];
-    for (let i in content) {
-      if (String(content[i].object).indexOf("__LINE_TOKEN__") !== 0) {
-        var send_options = {
-          host: 'api.line.me',
-          path: '/v2/bot/message/' + content[i].object + '/content',
-          headers: {
-            "Content-type": "application/json; charset=UTF-8",
-            "Authorization": " Bearer {" + "v66RZEdHXdQouvfhAFohg5PcFtRxc5cG7RCEFdtkjJoRLi4i/FKYD0lTpGid4ma4R/43QL+1jvI5dmUdGb/06DlbYfZX/ajkord5VQrazV8CUs894liV3ZZ8BQDDK1RYZAkGEhkp4rKS9OOTkWlojAdB04t89/1O/w1cDnyilFU=}" // ←ここに自分のトークンを入れる(LINE Developersで発行したやつ)
-          },
-          method: 'GET'
-        };
-
-        var req = https.request(send_options, function (res) {
-          var data = [];
-          res.on('data', function (chunk) {
+    functions = nameObject.map(it => done => {
+      if (String(it.object).indexOf('__LINE_TOKEN__') === 0) {
+        it.object = "__LINE_TOKEN__";
+        done(null, it);
+        return;
+      }
+      send_options = {
+        host: 'api.line.me',
+        path: `/v2/bot/message/${it.object}/content`,
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+          "Authorization": " Bearer {v66RZEdHXdQouvfhAFohg5PcFtRxc5cG7RCEFdtkjJoRLi4i/FKYD0lTpGid4ma4R/43QL+1jvI5dmUdGb/06DlbYfZX/ajkord5VQrazV8CUs894liV3ZZ8BQDDK1RYZAkGEhkp4rKS9OOTkWlojAdB04t89/1O/w1cDnyilFU=}",
+        },
+        method: 'GET',
+      };
+      req = https.request(send_options, res => {
+        data = [];
+        res
+          .on('data', chunk => {
             data.push(new Buffer(chunk));
-          }).on('error', function (err) {
-            console.log(err);
-          }).on('end', function () {
-            var result = Buffer.concat(data);
-            imgObject.push(result);
-            send_options.path = '/v2/bot/message/' + content[i].object + '/content';
-            if (imgObject.length == 2) {
-              callback(null, content, nameObject, imgObject);
-              imgResult[0] = imgObject;
-            }
+          })
+          .on('error', err => { done(err, null) })
+          .on('end', () => {
+            result = Buffer.concat(data);
+            it.object = result;
+            done(null, it);
           });
-        });
-        req.end();
-      }
-    }
+      });
+      req.end();
+      return;
+    });
+    callback(null, content, nameObject, functions);
   },
-  function (content, nameObject, imageObject, callback) {
-    console.log('start');
-    for (let i in content) {
-      if (String(nameObject[i]).indexOf("__LINE_TOKEN__") !== 0) {
-        content[i].name = nameObject[i];
-      }
-    }
-    profileContent[0] = content;
-    imgResult[0] = imageObject;
-  }]
+  function (content, nameObject, functions, callback) {
+    async.series(functions, (err, results) => {
+      if (err) console.error(err);
+      callback(null, content, nameObject, results);
+    });
+  },
+  function (content, nameObject, imgObject, callback) {
+    callback(imgObject);
+  }
+],
+  function (object) {
+    profileContent = object;
+  }
 );
 
 router.get('/', function (req, res, next) {
   res.render('index', {
-    content: profileContent[0]
+    content: profileContent
   });
 });
-
-router.get('/binary', function (req, res, next) {
-  res.render('binary', {
-    object: JSON.stringify(imgResult[0])
-  })
-})
 
 module.exports = router;
