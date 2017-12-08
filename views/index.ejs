@@ -6,75 +6,31 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta http-equiv="X-UA-Compatible" content="ie=edge">
   <link rel="stylesheet" href="/stylesheets/style.css">
-  <title>Document</title>
+  <script src="/javascripts/line_form.js"></script>
+  <title>Line App</title>
 </head>
 
 <body>
-  <div class="container none">
-    <div class="ejsContent">
-      <% for(var i in content){ %>
-        <% var index = content[i] %>
-          <div class="ejsContentName">
-            <%= index.name %>
-          </div>
-          <div class="ejsContentCreate_at">
-            <%= index.create_at %>
-          </div>
-          <div class="ejsContentText">
-            <%= index.text %>
-          </div>
-          <div class="ejsContentObject">
-            <%= index.object %>
-          </div>
-          <% } %>
-    </div>
+
+  <div id="ejsContent">
+    <% for(var i in content){ %>
+      <% var index = content[i] %>
+        <div class="ejsContentName">
+          <%= index.name %>
+        </div>
+        <div class="ejsContentCreate_at">
+          <%= index.create_at %>
+        </div>
+        <div class="ejsContentText">
+          <%= index.text %>
+        </div>
+        <div class="ejsContentObject">
+          <%= index.object %>
+        </div>
+        <% } %>
   </div>
+
+  <div id="root"></div>
 </body>
-<script>
-  var ejsContent = {};
-  var details = "";
-  var ejsContentName = document.getElementsByClassName('ejsContentName');
-  var ejsContentText = document.getElementsByClassName('ejsContentText');
-  var ejsContentObject = document.getElementsByClassName('ejsContentObject');
-  var ejsContentCreate_at = document.getElementsByClassName('ejsContentCreate_at');
-  var doc = document.getElementsByTagName('body')[0];
-  ejsContent.ejsContentName = ejsContentName;
-  ejsContent.ejsContentCreate_at = ejsContentCreate_at;
-  ejsContent.ejsContentText = ejsContentText;
-  ejsContent.ejsContentObject = ejsContentObject;
-  for (var i = 0; i < ejsContent.ejsContentCreate_at.length; i++) {
-    if (ejsContent.ejsContentName[i].innerHTML.indexOf("__LINE_TOKEN__") == -1) {
-      var nameToken = ejsContent.ejsContentName[i].innerHTML;
-    } else {
-      var nameToken = "";
-    }
-    if (ejsContent.ejsContentCreate_at[i].innerHTML.indexOf("__LINE_TOKEN__") == -1) {
-      var localTime = new Date(Number(ejsContent.ejsContentCreate_at[i].innerHTML));
-      var localTimeDay = localTime.getDate();
-      var localTimeDate = localTime.getHours();
-      var localTimeMinutes = localTime.getMinutes();
-      var localTimeSecond = localTime.getSeconds();
-      var localTimeString = localTimeDay + "日" + localTimeDate + "時" + localTimeMinutes + "分" + localTimeSecond + "秒";
-    }
-    if (ejsContent.ejsContentText[i].innerHTML.indexOf("__LINE_TOKEN__") == -1) {
-      details += "<div class='kaiwa'><figure class='kaiwa-img-right' title='" + localTimeString + "'><img src='/images/detail_line2.png' alt='./no-img2'>";
-      details += "<figcaption class='kaiwa-img-description'>" + nameToken + "</figcaption>";
-      details += "</figure><div class='kaiwa-text-left'><p class='kaiwa-text'>"
-      details += ejsContent.ejsContentText[i].innerHTML;
-      details += "</p></div></div>";
-    }
-    if (ejsContent.ejsContentObject[i].innerHTML.indexOf("__LINE_TOKEN__") == -1) {
-      var imgObject = JSON.parse(ejsContent.ejsContentObject[i].innerHTML);
-      var result = new Uint8Array(imgObject.data);
-      var blob = new Blob([result], { type: "image/jpeg" });
-      var url = URL.createObjectURL(blob);
-      details += "<div class='kaiwa'><figure class='kaiwa-img-left'title='" + localTimeString + "'><img src='/images/detail_line2.png' alt='./no-img2'>";
-      details += "<figcaption class='kaiwa-img-description'>" + nameToken + "</figcaption>";
-      details += "</figure><img class='textImg' src='" + url + "' alt=''>"
-      details += "</div>";
-    }
-  }
-  doc.innerHTML += details;
-</script>
 
 </html>

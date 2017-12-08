@@ -126,7 +126,7 @@ p.kaiwa-text:last-child {
   display: block;
 }
 
-.none {
+#ejsContent {
   display: none;
 }
 
