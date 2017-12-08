@@ -6,8 +6,8 @@ const ejs = require('ejs');
 const async = require('async');
 const kintone = require('kintone');
 
-const token = "prqZ0aqGgAiOe60lqlyLCEExPLaci0D0zBDizW13";
-const api = new kintone("parknet.cybozu.com", { token: token });
+const token = "";
+const api = new kintone("", { token: token });
 
 let
   send_options = {},
@@ -71,7 +71,7 @@ async.waterfall([
         "url": 'https://api.line.me/v2/bot/profile/' + it.name,
         headers: {
           "Content-type": "application/json; charset=UTF-8",
-          "Authorization": " Bearer {" + "v66RZEdHXdQouvfhAFohg5PcFtRxc5cG7RCEFdtkjJoRLi4i/FKYD0lTpGid4ma4R/43QL+1jvI5dmUdGb/06DlbYfZX/ajkord5VQrazV8CUs894liV3ZZ8BQDDK1RYZAkGEhkp4rKS9OOTkWlojAdB04t89/1O/w1cDnyilFU=}" // ←ここに自分のトークンを入れる(LINE Developersで発行したやつ)
+          "Authorization": " Bearer {" + "}"
         },
         method: 'GET'
       };
@@ -101,7 +101,7 @@ async.waterfall([
         path: `/v2/bot/message/${it.object}/content`,
         headers: {
           "Content-type": "application/json; charset=UTF-8",
-          "Authorization": " Bearer {v66RZEdHXdQouvfhAFohg5PcFtRxc5cG7RCEFdtkjJoRLi4i/FKYD0lTpGid4ma4R/43QL+1jvI5dmUdGb/06DlbYfZX/ajkord5VQrazV8CUs894liV3ZZ8BQDDK1RYZAkGEhkp4rKS9OOTkWlojAdB04t89/1O/w1cDnyilFU=}",
+          "Authorization": " Bearer {}",
         },
         method: 'GET',
       };
