@@ -29,24 +29,6 @@
           <% } %>
     </div>
   </div>
-  <div class="kaiwa">
-    <figure class="kaiwa-img-left">
-      <img src="/images/detail_line2.png">
-      <figcaption class="kaiwa-img-description">テスト</figcaption>
-    </figure>
-
-    <img class="textImg" src="/images/detail_line2.png" alt="">
-
-  </div>
-  <div class="kaiwa">
-    <figure class="kaiwa-img-left" title="2日16時24分19秒">
-      <img src="/images/detail_line2.png">
-      <figcaption class="kaiwa-img-description">自分</figcaption>
-    </figure>
-    <div class="kaiwa-text-right ">
-      <p class="kaiwa-text">こんばんわ</p>
-    </div>
-  </div>
 </body>
 <script>
   var ejsContent = {};
@@ -54,7 +36,6 @@
   var ejsContentName = document.getElementsByClassName('ejsContentName');
   var ejsContentText = document.getElementsByClassName('ejsContentText');
   var ejsContentObject = document.getElementsByClassName('ejsContentObject');
-  var ejsImgObject = document.getElementsByClassName('ejsImgObject')[0];
   var ejsContentCreate_at = document.getElementsByClassName('ejsContentCreate_at');
   var doc = document.getElementsByTagName('body')[0];
   ejsContent.ejsContentName = ejsContentName;
@@ -83,11 +64,14 @@
       details += "</p></div></div>";
     }
     if (ejsContent.ejsContentObject[i].innerHTML.indexOf("__LINE_TOKEN__") == -1) {
+      var imgObject = JSON.parse(ejsContent.ejsContentObject[i].innerHTML);
+      var result = new Uint8Array(imgObject.data);
+      var blob = new Blob([result], { type: "image/jpeg" });
+      var url = URL.createObjectURL(blob);
       details += "<div class='kaiwa'><figure class='kaiwa-img-left'title='" + localTimeString + "'><img src='/images/detail_line2.png' alt='./no-img2'>";
       details += "<figcaption class='kaiwa-img-description'>" + nameToken + "</figcaption>";
-      details += "</figure><div class='kaiwa-text-right'><p class='kaiwa-text'>"
-      details += ejsContent.ejsContentObject[i].innerHTML;
-      details += "</p></div></div>";
+      details += "</figure><img class='textImg' src='" + url + "' alt=''>"
+      details += "</div>";
     }
   }
   doc.innerHTML += details;

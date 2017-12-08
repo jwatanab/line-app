@@ -114,7 +114,7 @@ async.waterfall([
           .on('error', err => { done(err, null) })
           .on('end', () => {
             result = Buffer.concat(data);
-            it.object = result;
+            it.object = JSON.stringify(result);
             done(null, it);
           });
       });
