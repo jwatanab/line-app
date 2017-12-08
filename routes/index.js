@@ -65,7 +65,7 @@ async.waterfall([
         request.get(send_options, function (err, res, body) {
           var json = JSON.parse(body);
           acStr.unshift(json.displayName);
-          if (acStr.length == content.length - 1) callback(null, content, acStr);
+          if (acStr.length == content.length) callback(null, content, acStr);
         });
       } else {
         acStr.unshift("__LINE_TOKEN__");
@@ -97,7 +97,7 @@ async.waterfall([
             var result = Buffer.concat(data);
             imgObject.push(result);
             send_options.path = '/v2/bot/message/' + content[i].object + '/content';
-            if (imgObject.length == 9) {
+            if (imgObject.length == 2) {
               callback(null, content, nameObject, imgObject);
               imgResult[0] = imgObject;
             }
@@ -108,6 +108,7 @@ async.waterfall([
     }
   },
   function (content, nameObject, imageObject, callback) {
+    console.log('start');
     for (let i in content) {
       if (String(nameObject[i]).indexOf("__LINE_TOKEN__") !== 0) {
         content[i].name = nameObject[i];
